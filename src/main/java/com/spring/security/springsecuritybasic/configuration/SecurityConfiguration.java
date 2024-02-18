@@ -18,20 +18,31 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+	@Autowired
+	private CustomSuccessAuthHandler customSuccessAuthHandler;
+
     @Bean
 	public static PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
-    @Bean
+	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(Customizer.withDefaults())
 		
 				.authorizeHttpRequests(
 						authorizeRequests -> authorizeRequests
+								.requestMatchers("/login").permitAll()
+								.requestMatchers("/adminPage/**").hasRole("ADMIN")
+								.requestMatchers("/userPage/**").hasAnyRole("USER","ADMIN")
 								.anyRequest().authenticated())
-								.formLogin(formLogin -> formLogin.permitAll())
-								.logout(logout -> logout.permitAll());
+								
+				.formLogin(formLogin -> formLogin
+										.successHandler(customSuccessAuthHandler))
+
+				.logout(logout -> logout
+                						.permitAll());
+										
 		return http.build();
 	}
 
