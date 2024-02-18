@@ -1,21 +1,15 @@
 package com.spring.security.springsecuritybasic.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
-@RestController
-@RequestMapping("/api/greeting")
+@Controller
 public class MainController {
 
-    @GetMapping("")
-    public String greet() {
-        return "Hello Welcome";
-    }
-
-    @GetMapping("/secured")
-    public String securedGreeting() {
-        return "Hello Everyone";
+    @GetMapping("/")
+    public ModelAndView greet() {
+        return new ModelAndView("index");
     }
 
 }
