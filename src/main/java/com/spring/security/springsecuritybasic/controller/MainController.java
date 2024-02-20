@@ -14,8 +14,8 @@ public class MainController {
     }
 
     @GetMapping("/userPage")
-    public ModelAndView userPage() {
-        return new ModelAndView("userPage");
+    public String userPage() {
+        return "userPage";
     }
 
     @GetMapping("/adminPage")
